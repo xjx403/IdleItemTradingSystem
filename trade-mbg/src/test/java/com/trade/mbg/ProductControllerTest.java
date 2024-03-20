@@ -47,8 +47,8 @@ public class ProductControllerTest extends BaseSpringBootTest{
     @Test
     public void updateWrapperTest(){
         UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
-        updateWrapper.eq("id", 4);
-        updateWrapper.set("status", 1);
+        updateWrapper.ge("id", 4);
+        updateWrapper.set("picture", "http://localhost/backEnd/picture/get?type=2&ownerId=4");
         System.out.println(productService.update(updateWrapper));
     }
 }

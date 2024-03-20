@@ -23,6 +23,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -97,10 +98,19 @@ public class ProductController {
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<Product> entity = new HttpEntity<>(product, headers);
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(mbgHostUrl + "/product/update", entity, Boolean.class);
-
-
         return responseEntity.getBody() ? CommonResult.success("修改成功") : CommonResult.failed();
     }
+
+    @PostMapping(value = "/change/uploadImage")
+    public CommonResult uploadPicture(MultipartFile file){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<MultipartFile> entity = new HttpEntity<>(file, headers);
+
+        ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(mbgHostUrl + "/picture/upload", entity, Boolean.class);
+        return CommonResult.undeveloped();
+    }
+
 
     @GetMapping(value = "/get/BySn")
     public CommonResult getProductBySN(String sn){
