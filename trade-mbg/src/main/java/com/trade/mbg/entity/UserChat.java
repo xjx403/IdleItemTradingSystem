@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +14,7 @@ import lombok.Setter;
  * </p>
  *
  * @author xjx
- * @since 2024-01-07 06:59:48
+ * @since 2024-03-21 07:40:05
  */
 @Getter
 @Setter
@@ -47,7 +47,7 @@ public class UserChat implements Serializable {
     /**
      * 发送时间
      */
-    private LocalDate sendTime;
+    private LocalDateTime sendTime;
 
     /**
      * 是否已读
@@ -58,4 +58,6 @@ public class UserChat implements Serializable {
      * 消息内容
      */
     private String content;
+
+    private Integer isDeleted;
 }

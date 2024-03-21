@@ -2,7 +2,9 @@ package com.trade.mbg;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.trade.mbg.controller.ProductController;
+import com.trade.mbg.entity.Picture;
 import com.trade.mbg.entity.Product;
+import com.trade.mbg.service.PictureService;
 import com.trade.mbg.service.ProductService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.List;
 
 
 /**
@@ -24,7 +28,8 @@ public class ProductControllerTest extends BaseSpringBootTest{
     private ProductController productController;
     @Autowired
     private ProductService productService;
-
+    @Autowired
+    private PictureService pictureService;
 
     @Autowired
     private MockMvc mockMvc;
@@ -51,4 +56,14 @@ public class ProductControllerTest extends BaseSpringBootTest{
         updateWrapper.set("picture", "http://localhost/backEnd/picture/get?type=2&ownerId=4");
         System.out.println(productService.update(updateWrapper));
     }
+
+    @Test
+    public void get(){
+        List<Product> list = productService.list();
+        for (Product product: list) {
+            System.out.println(product.toString());
+        }
+    }
+
+
 }

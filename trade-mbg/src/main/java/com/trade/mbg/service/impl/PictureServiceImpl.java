@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author xjx
- * @since 2024-03-21 12:37:53
+ * @since 2024-03-21 06:32:00
  */
 @Service
 public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture> implements PictureService {

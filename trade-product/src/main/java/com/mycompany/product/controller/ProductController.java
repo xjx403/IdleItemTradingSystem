@@ -106,9 +106,8 @@ public class ProductController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<MultipartFile> entity = new HttpEntity<>(file, headers);
-
         ResponseEntity<Boolean> responseEntity = restTemplate.postForEntity(mbgHostUrl + "/picture/upload", entity, Boolean.class);
-        return CommonResult.undeveloped();
+        return responseEntity.getBody() ? CommonResult.success("上传成功") : CommonResult.failed("上传失败");
     }
 
 
@@ -124,4 +123,10 @@ public class ProductController {
         return product == null ? CommonResult.failed() : CommonResult.success(product);
     }
 
+    // GET http://localhost:8092/product/select
+    @GetMapping(value = "/get/ById")
+    public CommonResult getProductById(long id) {
+        Product product = restTemplate.getForObject(mbgHostUrl + "/product/select?id=" + id, Product.class);
+        return product == null ? CommonResult.failed() : CommonResult.success(product);
+    }
 }

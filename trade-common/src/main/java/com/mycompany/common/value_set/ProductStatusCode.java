@@ -9,7 +9,8 @@ package com.mycompany.common.value_set;
 public enum ProductStatusCode {
     UNAUDITED("未审核", 0),
     LISTED("已上架", 1),
-    SOLD("已售出", 2);
+    SOLD("已售出", 2),
+    IN_AUCTION("处于拍卖中", 3);
 
     private String status;
     private int code;

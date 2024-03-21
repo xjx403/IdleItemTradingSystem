@@ -13,7 +13,7 @@ import lombok.Setter;
  * </p>
  *
  * @author xjx
- * @since 2024-03-21 12:37:53
+ * @since 2024-03-21 06:32:00
  */
 @Getter
 @Setter
@@ -22,9 +22,6 @@ public class Picture implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -47,4 +44,6 @@ public class Picture implements Serializable {
      * 图片类型，如：png, jpg等
      */
     private String fileType;
+
+    private Integer isDeleted;
 }

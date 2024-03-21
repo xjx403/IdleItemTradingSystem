@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
  * </p>
  *
  * @author xjx
- * @since 2024-01-07 06:59:48
+ * @since 2024-03-21 07:40:05
  */
 @Service
 public class UserChatServiceImpl extends ServiceImpl<UserChatMapper, UserChat> implements UserChatService {

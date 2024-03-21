@@ -5,8 +5,6 @@ z
 Jcommon-consumer/src/main/java/com/common/consumer/ConsumerApplication.java,4\6\46babbfab5aef1a77e5d481ff86368b982d16c7a
 ˆ
 Xcommon-consumer/src/main/java/com/common/consumer/config/NacosConsumerConfiguration.java,2\8\28d835d779b091323157346dfb80714c78a2ba4e
-y
-Itrade-mbg/src/main/java/com/trade/mbg/service/impl/MemberServiceImpl.java,3\5\35e762be6e0301976c2c4433c7bf5e3c942b966b
 n
 >trade-mbg/src/main/java/com/trade/mbg/mapper/MemberMapper.java,e\6\e65acb3a16ed9990dab5317e90723fa702ea9269
 p
@@ -22,8 +20,6 @@ E
 version.md,d\3\d3a3062593ac0061936c70f006ff586526bb3494
 }
 Mtrade-common/src/main/java/com/mycompany/common/config/BaseSwaggerConfig.java,a\b\ab7f6929f0ea66da76c7247c5ee87ef4a007e5ad
-x
-Htrade-mbg/src/main/java/com/trade/mbg/controller/UserChatController.java,9\5\95e999ab08b89ffc473c5427d097739a75b77f10
 u
 Etrade-common/src/main/java/com/mycompany/common/utils/MyFileUtil.java,7\b\7b9d52603e69aebeed49dc3d2e53e093f06dd00d
 C
@@ -50,10 +46,6 @@ h
 8trade-mbg/src/main/java/com/trade/mbg/entity/Member.java,c\d\cdb660fe75072d86d93bac9b40a13635539164d6
 s
 Ctrade-common/src/main/java/com/mycompany/common/api/IErrorCode.java,1\5\15c53c3aabb83c0147d4f1a28c8c6c3ef9e663d7
-‚
-Rtrade-common/src/main/java/com/mycompany/common/value_set/MemberPrivilegeCode.java,3\0\3083df4cd26959dbde114fa1513e382de2e40817
-€
-Ptrade-common/src/main/java/com/mycompany/common/value_set/ProductStatusCode.java,9\5\9591622f753e4bbcbd78431b061fac18378365f8
 u
 Etrade-mbg/src/main/java/com/trade/mbg/controller/OrderController.java,6\f\6f8e0f49dcd83bda6eec0af303bdead1bfcddb50
 y
@@ -68,8 +60,6 @@ k
 ;trade-mbg/src/main/java/com/trade/mbg/entity/OrderItem.java,1\e\1e30bd781dc1c9d0336069d28b97dfa27f28b9e5
 g
 7trade-mbg/src/main/java/com/trade/mbg/entity/Order.java,c\9\c944b00d1e0cf59b85713d8cb5f1c19a6f16a619
-j
-:trade-mbg/src/main/java/com/trade/mbg/entity/UserChat.java,5\2\52b2ce975798f6b7c55fc626f6490b39349da6cf
 o
 ?trade-mbg/src/main/java/com/trade/mbg/mapper/ProductMapper.java,1\3\134f01f491b8f87f8665e26d10daa44c3dea1371
 m
@@ -92,15 +82,9 @@ y
 Itrade-gateway/src/main/java/com/mycompany/gateway/GatewayApplication.java,5\b\5b537e089f12e88327c9b30611c2e233381452a7
 {
 Ktrade-product/src/main/java/com/mycompany/product/config/RestAPIConfig.java,2\b\2bb1a3774c2fd58c29ff8960a7899c11cb8c8268
-i
-9trade-mbg/src/main/java/com/trade/mbg/entity/Product.java,8\c\8c74c41b4a3377c3cc927c7edea48bff262a371b
 s
 Ctrade-common/src/main/java/com/mycompany/common/api/ResultCode.java,3\8\3828ae7d81b16a0cc5c44046f66c93f30329e5fd
 u
 Etrade-common/src/main/java/com/mycompany/common/api/CommonResult.java,5\4\54b7cfc08cdf0ba591000846a6bafa2af4dd4cde
-w
-Gtrade-mbg/src/main/java/com/trade/mbg/controller/ProductController.java,6\c\6c408f014104625032321e1b54d117cdb3d3de44
 i
 9trade-mbg/src/main/java/com/trade/mbg/MbgApplication.java,d\9\d9ed19c0ac198316bdfe0467e52dae24444393e3
-v
-Ftrade-mbg/src/main/java/com/trade/mbg/controller/MemberController.java,5\e\5e21f879951324d1a404a369ac00bc8a789c22c3

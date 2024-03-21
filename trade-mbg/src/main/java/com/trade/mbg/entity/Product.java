@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * <p>
@@ -16,6 +17,7 @@ import lombok.Setter;
  * @author xjx
  * @since 2024-03-18 09:46:12
  */
+@ToString
 @Getter
 @Setter
 @TableName("pms_product")
