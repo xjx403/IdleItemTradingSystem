@@ -9,11 +9,8 @@ import com.trade.mbg.entity.Member;
 import com.trade.mbg.entity.Picture;
 import com.trade.mbg.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
@@ -128,7 +125,9 @@ public class PictureController {
     }
 
     @PostMapping(value = "/upload")
-    public boolean uploadPicture(MultipartFile file, int type, long ownerId) {
+    public boolean uploadPicture(@RequestParam("file") MultipartFile file,
+                                 @RequestParam int type,
+                                 @RequestParam long ownerId) {
         if (file == null) {
             return false;
         }

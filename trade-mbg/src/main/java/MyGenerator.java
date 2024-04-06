@@ -28,7 +28,7 @@ public class MyGenerator {
         })
                 // 策略配置
                 .strategyConfig(builder -> {
-                    builder.addInclude("ums_user_chat") // 设置需要生成的表名
+                    builder.addInclude("oms_order", "oms_order_item") // 设置需要生成的表名
                             .addTablePrefix("ums_", "pms_", "oms_") // 设置过滤表前缀
                             // Entity 策略配置
                             .entityBuilder()

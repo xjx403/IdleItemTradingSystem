@@ -3,7 +3,7 @@ P
 java:S1191"5Use classes from the Java API instead of Sun classes.(Ó¨Ôÿÿÿÿÿ
 <
 java:S1168 "&Return an empty array instead of null.(¦ÁœÉ
-‰
-java:S1130A"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(ÚŸÁ±8†ï…å1
-L
-java:S1172A"/Remove this unused method parameter "fileType".(ÚŸÁ±8Ëäî…å1
+‚
+java:S1130A"lRemove the declaration of thrown exception 'java.io.IOException', as it cannot be thrown from method's body.(ÚŸÁ±
+E
+java:S1172A"/Remove this unused method parameter "fileType".(ÚŸÁ±

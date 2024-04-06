@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.mycompany.common.api.CommonResult;
 import com.mycompany.common.utils.MyImageUtil;
+import com.mycompany.common.value_set.ImageTypeCode;
 import com.mycompany.common.value_set.MemberPrivilegeCode;
 import com.trade.mbg.entity.Member;
 import com.trade.mbg.service.MemberService;
@@ -14,8 +15,12 @@ import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -26,6 +31,8 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <p>
@@ -44,6 +51,8 @@ public class MemberController {
     @Autowired
     private MemberService memberService;
     private MyImageUtil myImageUtil = new MyImageUtil();
+    @Autowired
+    private RestTemplate restTemplate;
 
     @GetMapping(value = "/hello")
     public CommonResult hello(){
@@ -126,5 +135,22 @@ public class MemberController {
         memberUpdateWrapper.set("payment_code_image", codingString);
         boolean updateEnd = memberService.update(memberUpdateWrapper);
         return CommonResult.success(updateEnd);
+    }
+
+    @Operation(description = "修改用户头像")
+    @PostMapping(value = "/changeHeader")
+    public CommonResult changeUserHeader(MultipartFile newHeader, Long userId) {
+        if (newHeader == null) {
+            return CommonResult.failed("上传文件为空！");
+        }
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        Map<String, Object> eqMap = new HashMap<>();
+        eqMap.put("file", newHeader);
+        eqMap.put("type", ImageTypeCode.HEADER.getCode());
+        eqMap.put("ownerId", userId);
+        HttpEntity<Map> entity = new HttpEntity<>(eqMap, headers);
+        restTemplate.postForEntity("http://localhost:8092/picture/upload", entity ,Boolean.class);
+        return CommonResult.undeveloped();
     }
 }

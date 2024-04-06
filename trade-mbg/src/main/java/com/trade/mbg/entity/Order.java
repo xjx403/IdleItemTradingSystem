@@ -4,7 +4,8 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author xjx
- * @since 2024-01-07 06:59:48
+ * @since 2024-04-02 03:05:44
  */
 @Getter
 @Setter
@@ -37,17 +38,17 @@ public class Order implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDate createTime;
+    private LocalDateTime createTime;
 
     /**
      * 总金额
      */
-    private Long totalAmount;
+    private BigDecimal totalAmount;
 
     /**
-     * 支付状态
+     * 支付方式，1-扣除用户余额；2-付款码转账
      */
-    private Integer payStatus;
+    private Integer payWay;
 
     /**
      * 订单状态-待定
@@ -58,4 +59,9 @@ public class Order implements Serializable {
      * 备注信息
      */
     private String remarks;
+
+    /**
+     * 删除标志
+     */
+    private Integer isDeleted;
 }

@@ -17,10 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * <p>
- *  前端控制器
- * </p>
- *
  * @author xjx
  * @since 2024-01-03 09:36:52
  */

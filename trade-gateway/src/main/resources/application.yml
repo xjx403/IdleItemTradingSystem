@@ -1,3 +1,6 @@
+server:
+  port: 80
+
 spring:
   application:
     name: trade-gataway
@@ -6,14 +9,47 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     gateway:
-      discovery:
-        locator:
-          enabled: true
       routes:
-        id:
+        - id: vue_route
+          uri: http://localhost:5173
+          predicates:
+            - Path=/**
+          order: 3
+        - id: user_route
+          uri: http://localhost:8092/user/
+          predicates:
+            - Path=/backEnd/user/**
+          # 转发之前去掉第一层路径
+          filters:
+            - StripPrefix=1
+          order: 2
 
-server:
-  port: 9000
+        - id: product_route
+          uri: http://localhost:8084/product/
+          predicates:
+            - Path=/backEnd/product/**
+          # 转发之前去掉第一层路径
+          filters:
+            - StripPrefix=1
+          order: 2
+
+        - id: picture_route
+          uri:  http://127.0.0.1:8092/picture/
+          predicates:
+            - Path=/backEnd/picture/**
+          # 转发之前去掉第一层路径
+          filters:
+            - StripPrefix=1
+          order: 2
+
+        - id: chat_route
+          uri: http://localhost:8092/userChat/
+          predicates:
+            - Path=/backEnd/chat/**
+          # 转发之前去掉第一层路径
+          filters:
+            - RewritePath=/backEnd/chat/(?<segment>.*), /userChat/$\{segment}
+          order: 2
 
 management:
   endpoints:
@@ -21,5 +57,5 @@ management:
       exposure:
         include: "*"
 
-logging:
-  level: debug
+  #logging:
+  #  level: debug

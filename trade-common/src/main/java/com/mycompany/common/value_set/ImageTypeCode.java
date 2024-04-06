@@ -9,7 +9,8 @@ package com.mycompany.common.value_set;
 public enum ImageTypeCode {
     PAYMENT_CODE("收款码", 1),
     PRODUCT_PICTURE("商品图", 2),
-    OTHERS("其他",3);
+    HEADER("头像", 3),
+    OTHERS("其他",4);
 
     private String name;
     private int code;

@@ -42,6 +42,8 @@
         <trade-common.version>0.1-SNAPSHOT</trade-common.version>
         <trade-mbg.version>0.1-SNAPSHOT</trade-mbg.version>
         <gateway.version>3.1.3</gateway.version>
+        <hutool.version>5.7.21</hutool.version>
+        <JWT.version>0.11.5</JWT.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
     </properties>
@@ -108,6 +110,35 @@
                 <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity-engine-core.version}</version>
             </dependency>
+            <!--hutool通用工具包 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+            <!--JWT支持-->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${JWT.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${JWT.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${JWT.version}</version>
+            </dependency>
+<!--            &lt;!&ndash;security依赖&ndash;&gt;-->
+<!--            <dependency>-->
+<!--                <groupId>org.springframework.boot</groupId>-->
+<!--                <artifactId>spring-boot-starter-security</artifactId>-->
+<!--                <version>${spring-security.version}</version>-->
+<!--            </dependency>-->
+
             <dependency>
                 <groupId>org.mycompany</groupId>
                 <artifactId>trade-common</artifactId>

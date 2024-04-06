@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +14,7 @@ import lombok.Setter;
  * </p>
  *
  * @author xjx
- * @since 2024-01-07 06:59:48
+ * @since 2024-04-02 03:05:44
  */
 @Getter
 @Setter
@@ -41,5 +42,10 @@ public class OrderItem implements Serializable {
     /**
      * 商品纳入计算的最终价格
      */
-    private Long endPrice;
+    private BigDecimal endPrice;
+
+    /**
+     * 删除标志
+     */
+    private Integer isDeleted;
 }
