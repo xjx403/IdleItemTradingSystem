@@ -11,8 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
  * @注释
  */
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true)
+//@EnableWebSecurity
+//@EnableGlobalMethodSecurity(securedEnabled = true)
 public class SpringSecurityConfig {
 
 

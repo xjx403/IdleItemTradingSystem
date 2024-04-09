@@ -1,6 +1,8 @@
 package com.mycompany.order.service;
 
-import com.mycompany.order.tmp.PurchaseException;
+import com.mycompany.order.exception.PurchaseException;
+import com.trade.mbg.entity.Order;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -10,8 +12,9 @@ import java.util.List;
  * @Date 2024/3/25 15:49
  * @注释
  */
+@Service
 public interface PurchaseService {
-    Long createOrder(Long userId, List<Long> productIds, Integer payWay) throws PurchaseException;
-
+    Order createOrder(Long userId, List<Long> productIds, Integer payWay, String remark) throws PurchaseException;
+    Order createOrder(Long userId, Long productId, Integer payWay, String remark) throws PurchaseException;
     void payOrder(Long orderId) throws PurchaseException;
 }

@@ -1,5 +1,8 @@
 package com.trade.mbg.controller;
 
+import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
+import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -30,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,7 +86,32 @@ public class MemberController {
         return CommonResult.success(member);
     }
 
-
+    @Operation(description = "用户登录")
+    @PostMapping(value = "/login")
+    public CommonResult userLogin(@RequestParam String email, @RequestParam String password) {
+        QueryWrapper<Member> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("email", email);
+        Member user = memberService.getOne(queryWrapper);
+        if (user == null) {
+            return CommonResult.failed("查询不到该用户！");
+        }
+        if (!user.getPassword().equals(password)) {
+            return CommonResult.failed("用户密码错误！");
+        }
+        user.setPaymentCodeImage(null);
+        HashMap<String, Object> map = new HashMap<>();
+        HashMap<String, Object> payload = new HashMap<>();
+        payload.put("username", user.getUsername());
+        payload.put("header", user.getHeader());
+        payload.put("exp", (LocalDateTime.now().toString() + 300));
+        payload.put("id", user.getId());
+        payload.put("email", user.getEmail());
+        payload.put("privilege", user.getPrivilege());
+        String token = JWTUtil.createToken(payload, "123".getBytes());
+        map.put("token", token);
+//        map.put("user", user);
+        return CommonResult.success(map);
+    }
 
     @Operation(description = "获取用户的收款码")
     @GetMapping(value = "/getPaymentCode")

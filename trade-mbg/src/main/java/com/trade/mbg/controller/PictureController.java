@@ -45,6 +45,7 @@ public class PictureController {
         queryWrapper.eq("owner_id", ownerId);
         queryWrapper.last("limit 1");
         Picture picture = pictureService.getOne(queryWrapper);
+        if (picture == null) return;
         String pictureContent = picture.getContent();
         if (pictureContent != null) {
 

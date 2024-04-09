@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
  * @注释
  */
 @Data
-@Configuration
+//@Configuration
 @Slf4j
 public class JWTFilter implements GlobalFilter, Ordered {
     @Override
@@ -36,6 +36,6 @@ public class JWTFilter implements GlobalFilter, Ordered {
 
     @Override
     public int getOrder() {
-        return 0;
+        return 1;
     }
 }

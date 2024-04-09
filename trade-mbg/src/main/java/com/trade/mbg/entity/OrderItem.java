@@ -48,4 +48,15 @@ public class OrderItem implements Serializable {
      * 删除标志
      */
     private Integer isDeleted;
+
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", productId=" + productId +
+                ", orderId=" + orderId +
+                ", endPrice=" + endPrice +
+                ", isDeleted=" + isDeleted +
+                '}';
+    }
 }

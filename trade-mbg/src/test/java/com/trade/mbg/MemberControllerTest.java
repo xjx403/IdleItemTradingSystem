@@ -1,6 +1,7 @@
 package com.trade.mbg;
 
 import com.trade.mbg.controller.MemberController;
+import com.trade.mbg.service.MemberService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class MemberControllerTest extends BaseSpringBootTest{
     @Autowired
     private MemberController memberController;
 
+    @Autowired
+    private MemberService memberService;
     @Autowired
     private MockMvc mockMvc;
 
@@ -62,7 +65,11 @@ public class MemberControllerTest extends BaseSpringBootTest{
                     .andReturn().getResponse().getContentAsString();
             System.out.println("result:" + result);
         }
+    }
 
 
+    @Test
+    public void  testDelUser(){
+        System.out.println(memberService.removeById(52l));
     }
 }

@@ -1,4 +1,4 @@
-package com.mycompany.order.tmp;
+package com.mycompany.order.exception;
 
 /**
  * @version 1.0

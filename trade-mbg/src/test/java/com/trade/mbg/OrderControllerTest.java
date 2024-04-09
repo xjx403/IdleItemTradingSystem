@@ -1,5 +1,6 @@
 package com.trade.mbg;
 
+import com.trade.mbg.service.OrderService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -16,7 +17,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 public class OrderControllerTest extends BaseSpringBootTest{
     @Autowired
     private MockMvc mockMvc;
-
+    @Autowired
+    private OrderService orderService;
     @Test
     public void updateTest() throws Exception{
         String url = "/order/insert";
@@ -36,6 +38,11 @@ public class OrderControllerTest extends BaseSpringBootTest{
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn().getResponse().getContentAsString();
         System.out.println(result);
+    }
+
+    @Test
+    public void testDelOrder(){
+        System.out.println(orderService.removeById(1l));
     }
 
 }
