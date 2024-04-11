@@ -1,7 +1,10 @@
 package com.trade.mbg.controller;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.mycompany.common.api.CommonResult;
+import com.trade.mbg.entity.Chat;
 import com.trade.mbg.entity.UserChat;
 import com.trade.mbg.service.MyUserChatService;
 import com.trade.mbg.service.UserChatService;
@@ -11,10 +14,7 @@ import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author xjx
@@ -50,27 +50,19 @@ public class UserChatController {
 
     @GetMapping(value = "/list")
     public List<UserChat> listMessageOfChat(long myId, long toUserId) {
+
         return myUserChatService.listMessageOfChat(myId, toUserId);
+    }
+
+    private boolean isAfter(LocalDateTime time1, LocalDateTime time2) {
+        if (time1.isAfter(time2)) return true;
+        return false;
     }
 
     // 用户头像，用户名称，最新的会话消息，最新的对话消息时间
     @GetMapping(value = "/myChats")
-    public List<Long> listMyChats(long myId) {
-        HashSet<Long> chatUserIdSet = new HashSet<>();
-        QueryWrapper<UserChat> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("from_user_id", myId);
-        List<UserChat> list = userChatService.list(queryWrapper);
-        for (UserChat message: list) {
-            chatUserIdSet.add(message.getReceiveUserId());
-        }
-        queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("receive_user_id", myId);
-        list = userChatService.list(queryWrapper);
-        for (UserChat message: list) {
-            chatUserIdSet.add(message.getFromUserId());
-        }
-        ArrayList<Long> chatsOfOtherIdList = new ArrayList<>(chatUserIdSet);
+    public List<Chat> listMyChats(long myId) {
 
-        return chatsOfOtherIdList;
+        return myUserChatService.listChats(myId);
     }
 }

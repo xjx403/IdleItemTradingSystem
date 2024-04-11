@@ -1,5 +1,6 @@
 package com.trade.mbg.service.impl;
 
+import com.trade.mbg.entity.Chat;
 import com.trade.mbg.entity.UserChat;
 import com.trade.mbg.mapper.MyUserChatMapper;
 import com.trade.mbg.service.MyUserChatService;
@@ -23,5 +24,10 @@ public class MyUserChatServiceImpl implements MyUserChatService {
     @Override
     public List<UserChat> listMessageOfChat(long fromUserId, long toUserId) {
         return myUserChatMapper.getChatMessage(fromUserId, toUserId);
+    }
+
+    @Override
+    public List<Chat> listChats(long userId) {
+        return myUserChatMapper.getMyChats(userId);
     }
 }

@@ -59,4 +59,9 @@ public class UserChatControllerTest extends BaseSpringBootTest{
     public void testMyMapper(){
         System.out.println(myUserChatService.listMessageOfChat(5, 4));
     }
+
+    @Test
+    public void  testSelectMyChats(){
+        System.out.println(userChatMapper.getMyChats(5));
+    }
 }

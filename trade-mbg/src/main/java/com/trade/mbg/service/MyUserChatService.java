@@ -1,5 +1,6 @@
 package com.trade.mbg.service;
 
+import com.trade.mbg.entity.Chat;
 import com.trade.mbg.entity.UserChat;
 
 import java.util.List;
@@ -12,4 +13,5 @@ import java.util.List;
  */
 public interface MyUserChatService {
     List<UserChat> listMessageOfChat(long fromUserId, long toUserId);
+    public List<Chat> listChats(long userId);
 }

@@ -6,6 +6,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mycompany.common.api.CommonResult;
+import com.trade.mbg.entity.Member;
 import com.trade.mbg.entity.Product;
 import com.trade.mbg.service.MemberService;
 import com.trade.mbg.service.ProductService;
@@ -70,6 +71,11 @@ public class ProductController {
         PageHelper.startPage(pageNumber, pageSize);
         List<Product> list = productService.list();
         PageInfo<Product> productPageInfo = new PageInfo<>(list);
+        List<Product> products = productPageInfo.getList();
+        for (Product product : products) {
+            Member seller = memberService.getById(product.getSellerId());
+            product.setDescription(seller.getUsername());
+        }
         return CommonResult.success(productPageInfo);
     }
 

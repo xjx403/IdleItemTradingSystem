@@ -58,7 +58,7 @@ public class ProductController {
         return restTemplate.getForObject(mbgHostUrl + "/product/list?pageNumber="+ pageNumber + "&pageSize=" + pageSize, CommonResult.class);
     }
 
-    @PostMapping(value = "/add")
+    @PostMapping(value = "/upload")
     public CommonResult addNewProduct(  @RequestParam Long sellerId,
                                         @RequestParam String productName,
                                         @RequestParam BigDecimal productPrice,

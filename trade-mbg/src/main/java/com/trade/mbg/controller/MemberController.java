@@ -182,4 +182,18 @@ public class MemberController {
         restTemplate.postForEntity("http://localhost:8092/picture/upload", entity ,Boolean.class);
         return CommonResult.undeveloped();
     }
+
+    @Operation(description = "获取用户详情信息")
+    @GetMapping(value = "/detail")
+    public CommonResult getUserDetail(Long userId) {//
+        if (userId == null) {
+            return CommonResult.validateFailed("用户id不能为空！");
+        }
+        Member user = memberService.getById(userId);
+        if (user == null) {
+            return CommonResult.failed("未查询到该用户");
+        }
+        user.setPaymentCodeImage(null);
+        return CommonResult.success(user);
+    }
 }
