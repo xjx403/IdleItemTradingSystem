@@ -100,6 +100,12 @@ public class MyOrderServiceImpl implements MyOrderService {
         return myOrderServiceTransaction.createOrder(userId, list, payWay, remark);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Order createAuctionOrder(Long userId, Long productId, Integer payWay, String remark, BigDecimal needToPay) throws MyOrderException {
+        return myOrderServiceTransaction.createAuctionOrder(userId, productId, payWay, remark, needToPay);
+    }
+
     @Override
     public void payOrder(Long orderId) throws MyOrderException {
         Order order = orderService.getById(orderId);

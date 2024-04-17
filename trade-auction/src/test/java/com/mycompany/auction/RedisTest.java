@@ -1,10 +1,14 @@
 package com.mycompany.auction;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mycompany.auction.entity.AuctionProductVO;
 import com.mycompany.common.utils.RedisKeyUtil;
 import org.junit.Test;
 import org.springframework.data.redis.core.RedisTemplate;
 
 import javax.annotation.Resource;
+import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 
 /**
  * @version 1.0
@@ -17,9 +21,13 @@ public class RedisTest extends BaseSpringBootTest{
     @Resource
     private RedisTemplate<String,Object> redisTemplate;
 
+
     @Test
     public void testRedis(){
-        redisTemplate.opsForValue().set("user1","nihao");
+        AuctionProductVO productVO = new AuctionProductVO();
+        productVO.setEndTime(LocalDateTime.now());
+        redisTemplate.opsForValue().set("user1",productVO);
+
         System.out.println(redisTemplate.opsForValue().get("user1"));
     }
 
@@ -45,5 +53,11 @@ public class RedisTest extends BaseSpringBootTest{
     @Test
     public void delList() {
         System.out.println(redisTemplate.delete(RedisKeyUtil.getAuctionProductKeyHead() + "list"));
+    }
+
+    @Test
+    public void value(){
+
+        System.out.println(redisTemplate.opsForValue().get(RedisKeyUtil.getAuctionProductKey(9)).toString());
     }
 }

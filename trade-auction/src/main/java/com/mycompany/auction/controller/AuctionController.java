@@ -1,19 +1,26 @@
 package com.mycompany.auction.controller;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mycompany.auction.entity.AuctionProductVO;
 import com.mycompany.auction.service.AuctionService;
+import com.mycompany.auction.service.AuctionTaskService;
 import com.mycompany.common.api.CommonResult;
 import com.trade.mbg.entity.Product;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -26,8 +33,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/auction")
 public class AuctionController {
+
     @Autowired
     private AuctionService auctionService;
+    @Autowired
+    private AuctionTaskService auctionTaskService;
+    @Autowired
+    private RestTemplate restTemplate;
+    @Value("${trade.host.url.mbg}")
+    private String mbgHost;
 
     private AuctionProductVO setFakeBiddingHistory(AuctionProductVO auctionProduct){
         ArrayList<String> list = new ArrayList<>();
@@ -89,5 +103,31 @@ public class AuctionController {
             return CommonResult.failed("用户" + userId +" 不能重复报名");
         }
         return CommonResult.success("用户" + userId + " 报名成功！");
+    }
+
+
+    @Operation(description = "将某件商品上架拍卖")
+    @PostMapping("/changeToAuction")
+    public CommonResult changeProductToAuctionStatus(@RequestParam Long userId,
+                                                     @RequestParam Long productId,
+                                                     @RequestParam(required = false) Long duration,
+                                                     @RequestParam(required = false) BigDecimal miniIncrement) {
+        //参数校验
+        Product product = restTemplate.getForObject(mbgHost + "/product/select?id=" + productId, Product.class);
+        if (product.getSellerId() != userId) return CommonResult.validateFailed("该用户不是商品的卖家，无权进行该操作！");
+
+        LocalDateTime endTime = LocalDateTimeUtil.offset(LocalDateTime.now(), duration, ChronoUnit.SECONDS);
+        AuctionProductVO productVO = auctionService.setAuctionProduct(productId, miniIncrement, endTime);
+        if (productVO == null) {
+            return CommonResult.failed();
+        }
+        auctionTaskService.startTask(productVO);
+        return CommonResult.success(productVO);
+//        HashMap<String, Object> map = new HashMap<>();
+//        map.put("userId", userId);
+//        map.put("productId", productId);
+//        map.put("duration", duration);
+//        map.put("miniIncre", miniIncrement);
+//        return CommonResult.success(map);
     }
 }

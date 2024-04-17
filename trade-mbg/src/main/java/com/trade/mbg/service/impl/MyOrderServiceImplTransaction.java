@@ -1,5 +1,6 @@
 package com.trade.mbg.service.impl;
 
+import com.mycompany.common.value_set.ProductStatusCode;
 import com.trade.mbg.entity.Order;
 import com.trade.mbg.entity.OrderItem;
 import com.trade.mbg.entity.Product;
@@ -57,6 +58,9 @@ public class MyOrderServiceImplTransaction implements MyOrderService {
             if (product == null) {
                 throw new MyOrderException("Product not found: " + productId);
             }
+            if (product.getStatus() != ProductStatusCode.LISTED.getCode()) {
+                throw new MyOrderException("商品状态错误！商品状态为：" +  ProductStatusCode.getStatusByCode(product.getStatus()));
+            }
             products.add(product);
             totalAmount = totalAmount.add(product.getPrice());
         }
@@ -65,6 +69,9 @@ public class MyOrderServiceImplTransaction implements MyOrderService {
         //更新订单总金额
         orderService.updateById(order);
         for (Product product : products) {
+            //修改商品状态已经售出
+            product.setStatus(ProductStatusCode.SOLD.getCode());
+            productService.updateById(product);
             OrderItem orderItem = new OrderItem();
             orderItem.setOrderId(order.getId());
             orderItem.setProductId(product.getId());
@@ -83,6 +90,40 @@ public class MyOrderServiceImplTransaction implements MyOrderService {
     @Override
     public Order createOrder(Long userId, Long productId, Integer payWay, String remark) throws MyOrderException {
         return null;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRED)
+    public Order createAuctionOrder(Long userId, Long productId, Integer payWay, String remark, BigDecimal needToPay) throws MyOrderException{
+        //创建订单
+        Order order = new Order();
+        order.setUserId(userId);
+        order.setCreateTime(LocalDateTime.now());
+        order.setPayWay(payWay == null ? 1 : payWay.intValue());
+        order.setStatus(0);
+        order.setIsDeleted(0);
+        order.setRemarks(remark == null ? "这是默认备注" : remark);
+        order.setTotalAmount(needToPay);
+        //保存订单
+        orderService.save(order);
+        if (order.getId() == null) {
+            throw new MyOrderException("Order id is null!!");
+        }
+        Product product = productService.getById(productId);
+        if (product.getStatus() != ProductStatusCode.IN_AUCTION.getCode()) {
+            throw new MyOrderException("商品状态错误！商品状态为：" +  ProductStatusCode.getStatusByCode(product.getStatus()));
+        }
+        product.setStatus(ProductStatusCode.SOLD.getCode());
+        productService.updateById(product);
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrderId(order.getId());
+        orderItem.setProductId(product.getId());
+        orderItem.setEndPrice(product.getPrice());
+        orderItem.setIsDeleted(0);
+        //插入单个订单项
+        orderItemService.save(orderItem);
+
+        return order;
     }
 
     @Override

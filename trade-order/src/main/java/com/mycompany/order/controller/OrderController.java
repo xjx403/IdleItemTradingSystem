@@ -80,7 +80,6 @@ public class OrderController {
         valueMap.add("userId", userId.toString());
         valueMap.add("productId", productId.toString());
         valueMap.add("payWay", payWay.toString());
-
         valueMap.add("remark", remark);
         HttpEntity<MultiValueMap> entity = new HttpEntity<>(valueMap, headers);
         ResponseEntity<Order> responseEntity = restTemplate.postForEntity(mbgHostUrl + "/order/generate", entity, Order.class);

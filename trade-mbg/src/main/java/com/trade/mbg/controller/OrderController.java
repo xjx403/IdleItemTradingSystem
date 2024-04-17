@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -74,14 +75,25 @@ public class OrderController {
     public Order generateOrder(@RequestParam Long userId,
                                @RequestParam Long productId,
                                @RequestParam Integer payWay,
-                               @RequestParam(required = false) String remark) {
+                               @RequestParam(required = false) String remark,
+                               @RequestParam (required = false)BigDecimal needToPay,
+                               @RequestParam (required = false) boolean isAuctionOrder) {
 
         if (productId == null || payWay == null || userId == null) return null;
         if (payWay != PayWayCode.SELF_TRADING.getCode()
                 && payWay != PayWayCode.DEDUCTION_BALANCE.getCode())
             return null;
-
         Order order = null;
+        //代表需要进行拍卖商品的订单生成
+        if (isAuctionOrder) {
+            try {
+                order = myOrderService.createAuctionOrder(userId, productId, payWay, remark, needToPay);
+            } catch (MyOrderException e) {
+                e.printStackTrace();
+            }
+            return order;
+        }
+
         try {
             order = myOrderService.createOrder(userId, productId, payWay, remark);
         } catch (MyOrderException e) {

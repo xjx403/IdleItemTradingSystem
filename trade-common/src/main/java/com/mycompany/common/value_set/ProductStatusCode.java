@@ -34,4 +34,14 @@ public enum ProductStatusCode {
     public void setCode(int code) {
         this.code = code;
     }
+
+    // 根据 code 值获取对应的 status
+    public static String getStatusByCode(int code) {
+        for (ProductStatusCode statusCode : ProductStatusCode.values()) {
+            if (statusCode.getCode() == code) {
+                return statusCode.getStatus();
+            }
+        }
+        return "error!值集外的值"; // 或者抛出异常，视需求而定
+    }
 }

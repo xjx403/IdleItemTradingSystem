@@ -2,8 +2,10 @@ package com.mycompany.auction.service;
 
 import com.github.pagehelper.PageInfo;
 import com.mycompany.auction.entity.AuctionProductVO;
+import com.trade.mbg.entity.Product;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -14,6 +16,7 @@ import java.util.List;
  */
 public interface AuctionService {
     AuctionProductVO getAuctionProductById(long productId);
+    AuctionProductVO setAuctionProduct(long productId, BigDecimal miniIncrement, LocalDateTime endTime);
     List<AuctionProductVO> list();
     PageInfo<AuctionProductVO> list(Integer pageNumber, Integer pageSize);
 

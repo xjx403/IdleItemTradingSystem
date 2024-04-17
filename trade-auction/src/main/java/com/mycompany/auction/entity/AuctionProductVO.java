@@ -43,4 +43,17 @@ public class AuctionProductVO implements Serializable {
         this.bidHistory = null;
     }
 
+    public AuctionProductVO(Product product,
+                            BigDecimal startPrice,
+                            BigDecimal minBidIncrement,
+                            LocalDateTime endTime) {
+        this.productId = product.getId();
+        this.productName = product.getProductName();
+        this.picture = product.getPicture();
+        this.currentPrice = startPrice;
+        this.startPrice = startPrice;
+        this.minBidIncrement = minBidIncrement;
+        this.endTime = endTime;
+        this.bidHistory = null;
+    }
 }

@@ -1,20 +1,31 @@
 package com.mycompany.auction.service.impl;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.github.pagehelper.PageInfo;
 import com.mycompany.auction.entity.AuctionProductVO;
 import com.mycompany.auction.service.AuctionService;
 import com.mycompany.common.utils.RedisKeyUtil;
+import com.mycompany.common.value_set.ProductStatusCode;
 import com.trade.mbg.entity.Product;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.Cursor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ScanOptions;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,6 +37,7 @@ import java.util.concurrent.TimeUnit;
  * @Date 2024/4/15 16:53
  * @注释
  */
+@Slf4j
 @Service
 public class AuctionServiceImpl implements AuctionService {
     @Autowired
@@ -38,17 +50,38 @@ public class AuctionServiceImpl implements AuctionService {
     @Override
     public AuctionProductVO getAuctionProductById(long productId) {
         String auctionProductKey = RedisKeyUtil.getAuctionProductKey(productId);
-        AuctionProductVO productVO = (AuctionProductVO) redisTemplate.opsForValue().get(auctionProductKey);
-        if (productVO == null) {
-            Product product = restTemplate.getForObject(mbgHost + "/product/select?id=" + productId, Product.class);
-            if (product == null) return null;
-            productVO = new AuctionProductVO(product);
-            redisTemplate.opsForValue().set(auctionProductKey, productVO, 5, TimeUnit.HOURS);
-            redisTemplate.opsForSet().add(RedisKeyUtil.getAuctionProductKeyHead(), auctionProductKey);
-            redisTemplate.opsForList().rightPush(RedisKeyUtil.getAuctionProductKeyHead() + "list", auctionProductKey);
+        return  (AuctionProductVO) redisTemplate.opsForValue().get(auctionProductKey);
+    }
+
+    @Override
+    public AuctionProductVO setAuctionProduct(long productId, BigDecimal miniIncrement, LocalDateTime endTime) {
+        Product product = restTemplate.getForObject(mbgHost + "/product/select?id=" + productId, Product.class);
+        if (product == null) return null;
+
+        //修改商品状态为拍卖中
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        MultiValueMap<String, String> valueMap = new LinkedMultiValueMap<>();
+        valueMap.add("productId", String.valueOf(productId));
+        valueMap.add("newStatus", String.valueOf(ProductStatusCode.IN_AUCTION.getCode()));
+        HttpEntity<MultiValueMap> entity = new HttpEntity<>(valueMap, headers);
+        Boolean changeStatusEnd = restTemplate.postForEntity(mbgHost + "/product/update/status", entity, Boolean.class).getBody();
+        if (!changeStatusEnd) {
+            log.error("修改商品状态到拍卖中，失败！{}", product);
+            return null;
         }
+        String auctionProductKey = RedisKeyUtil.getAuctionProductKey(product.getId());
+        AuctionProductVO productVO = (AuctionProductVO) redisTemplate.opsForValue().get(auctionProductKey);
+        if (productVO != null) {
+            return null;
+        }
+        productVO = new AuctionProductVO(product, product.getPrice(), miniIncrement, endTime);
+        redisTemplate.opsForValue().set(auctionProductKey, productVO);
+        //redisTemplate.opsForSet().add(RedisKeyUtil.getAuctionProductKeyHead(), auctionProductKey);
+        redisTemplate.opsForList().rightPush(RedisKeyUtil.getAuctionProductKeyHead() + "list", auctionProductKey);
         return productVO;
     }
+
 
     private Set<String> scanKeys(String pattern) {
         return redisTemplate.keys(pattern);
@@ -124,7 +157,13 @@ public class AuctionServiceImpl implements AuctionService {
         return productVOPageInfo;
     }
 
-    //用户竞价
+    /**
+     *  用户出价历史
+     *  注意！！ 在生成订单时，也是由此判断最终用户，修改存储方式时，也需修改拍卖商品订单生成逻辑 （com/mycompany/auction/service/AuctionTaskService.java）
+     * @param userId
+     * @param userBiding
+     * @return 用户[userId] 出价 [biding]元
+     */
     private String generateBidHistory(Long userId, BigDecimal userBiding){
         StringBuffer bidHistory = new StringBuffer("用户")
                 .append(userId)

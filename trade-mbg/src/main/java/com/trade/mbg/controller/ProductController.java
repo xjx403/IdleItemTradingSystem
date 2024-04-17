@@ -2,10 +2,12 @@ package com.trade.mbg.controller;
 
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.mycompany.common.api.CommonResult;
+import com.mycompany.common.value_set.ProductStatusCode;
 import com.trade.mbg.entity.Member;
 import com.trade.mbg.entity.Product;
 import com.trade.mbg.service.MemberService;
@@ -61,6 +63,24 @@ public class ProductController {
     @PostMapping(value = "/update")
     public boolean updateProductInfo(@RequestBody Product product) {
         return productService.updateById(product);
+    }
+
+
+    @Operation(description = "修改商品状态")
+    @PostMapping(value = "/update/status")
+    public boolean updateProductStatus(@RequestParam Long productId,
+                                       @RequestParam Integer newStatus) {
+        boolean isQualifiedParam = false;
+        for (ProductStatusCode statusCode : ProductStatusCode.values()) {
+            if (newStatus == statusCode.getCode()) isQualifiedParam = true;
+        }
+        if (!isQualifiedParam) return false;
+
+        UpdateWrapper<Product> updateWrapper = new UpdateWrapper<>();
+        updateWrapper.set("status", newStatus) // 设置要更新的字段和值
+                .eq("id", productId) // 指定更新条件：id = productId
+                .eq("is_deleted", 0); // 指定更新条件：is_deleted = 0
+        return  productService.update(updateWrapper);
     }
 
     @Operation(description = "分页展示商品")
