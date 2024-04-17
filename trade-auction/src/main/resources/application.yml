@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: trade-auction
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        enabled: false
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/idle_trading_system?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 1234
+
+  redis:
+    port: 6379
+    host: localhost
+
+
+server:
+  port: 8085
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+#seata:
+#  tx-service-group: my_test_tx_group
+#  service:
+#    vgroup-mapping:
+#      my_test_tx_group: default
+#  registry:
+#    type: nacos
+#    nacos:
+#      server-addr: localhost:8848
+#      application: seata-server
+#      group: DEFAULT_GROUP
+
+trade:
+  host:
+    url:
+      mbg: http://localhost:8092

@@ -14,6 +14,7 @@
         <module name="trade-mbg" />
         <module name="trade-gateway" />
         <module name="trade-order" />
+        <module name="trade-auction" />
       </profile>
     </annotationProcessing>
   </component>
@@ -22,6 +23,7 @@
       <module name="IdleItemTradingSystem" options="" />
       <module name="common-consumer" options="-parameters" />
       <module name="common-provider" options="-parameters" />
+      <module name="trade-auction" options="-parameters" />
       <module name="trade-common" options="-parameters" />
       <module name="trade-gateway" options="-parameters" />
       <module name="trade-mbg" options="-parameters" />
